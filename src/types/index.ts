@@ -19,9 +19,9 @@ export interface WorkerUser {
 }
 
 export interface AuthResponse {
-  access_token: string;
-  user: WorkerUser;
-  isNewUser?: boolean;
+  token: string;
+  worker: WorkerUser;
+  isNew?: boolean;
 }
 
 // ─── Booking / Job ───────────────────────────────────────────────────────────

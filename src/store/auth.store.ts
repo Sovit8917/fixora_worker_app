@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { WorkerUser } from '@/types';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { WorkerUser } from "@/types";
 
 interface AuthState {
   user: WorkerUser | null;
@@ -22,20 +22,21 @@ export const useAuthStore = create<AuthState>()(
       _hasHydrated: false,
 
       setAuth: (user, token) =>
-        set({ user, token, isAuthenticated: true }),
-
+        set({ user, token, isAuthenticated: !!(user && token) }),
       updateUser: (partial) =>
         set((s) => ({ user: s.user ? { ...s.user, ...partial } : null })),
 
-      logout: () =>
-        set({ user: null, token: null, isAuthenticated: false }),
+      logout: () => set({ user: null, token: null, isAuthenticated: false }),
 
-      setHasHydrated: (val) =>
-        set({ _hasHydrated: val }),
+      setHasHydrated: (val) => set({ _hasHydrated: val }),
     }),
     {
-      name: 'worker-auth-storage',
-      partialize: (s) => ({ user: s.user, token: s.token, isAuthenticated: s.isAuthenticated }),
+      name: "worker-auth-storage",
+      partialize: (s) => ({
+        user: s.user,
+        token: s.token,
+        isAuthenticated: s.isAuthenticated,
+      }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
